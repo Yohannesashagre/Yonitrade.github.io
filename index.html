@@ -1154,7 +1154,7 @@
 
             // Update the wishes message to include the user's name
             wishesMessage.textContent =
-                `🎊 Dear ${trimmedName}, wishing you a spectacular New Year 2025! ` +
+                `🎊 Dear ${trimmedName}, wishing you a spectacular New Year 2019! ` +
                 `May each day bring you closer to your dreams. ` +
                 `Stay blessed, stay happy, and keep shining bright! 🌟`;
 
@@ -1257,13 +1257,13 @@
         shareBtn.addEventListener('click', function() {
             const userName = textName.textContent.trim();
             const shareMessage =
-                `🎉 ${userName} sends you warm wishes for New Year 2025! ` +
+                `🎉 ${userName} sends you warm wishes for New Year 2019! ` +
                 `May this year bring you joy, success, and countless blessings. ✨ #HappyNewYear2025 #AHOPEFamily`;
 
             // Check if the Web Share API is available
             if (navigator.share) {
                 navigator.share({
-                        title: 'New Year Wishes 2025',
+                        title: 'New Year Wishes 2019',
                         text: shareMessage,
                         url: window.location.href,
                     })
@@ -1322,7 +1322,7 @@
             textName.textContent = 'Guest';
             // Reset wishes message
             wishesMessage.textContent =
-                '🎊 Wishing you a year filled with joy, success, and wonderful moments. May 2025 bring you endless happiness and prosperity! 🎊';
+                '🎊 Wishing you a year filled with joy, success, and wonderful moments. May 2019 bring you endless happiness and prosperity! 🎊';
             // Reset the uploaded file reference
             uploadedFile = null;
             inputPhoto.value = '';
@@ -1358,7 +1358,7 @@
                         profileDisplay.classList.add('has-image');
                         // Update wishes message
                         wishesMessage.textContent =
-                            `🎊 Dear ${cardData.name}, wishing you a spectacular New Year 2025! ` +
+                            `🎊 Dear ${cardData.name}, wishing you a spectacular New Year 2019! ` +
                             `May each day bring you closer to your dreams. ` +
                             `Stay blessed, stay happy, and keep shining bright! 🌟`;
                         console.log('📂 Loaded saved card from localStorage:', cardData);
@@ -1554,7 +1554,7 @@
         // ============================================================
         // LOG - Indicate that all scripts have loaded successfully
         // ============================================================
-        console.log('🚀 New Year Wishes 2025 — All systems ready!');
+        console.log('🚀 New Year Wishes 2019 — All systems ready!');
         console.log('📋 Features: Photo upload, name personalization, particle animation,');
         console.log('   local storage, share functionality, toast notifications,');
         console.log('   responsive design, keyboard support, and more.');
