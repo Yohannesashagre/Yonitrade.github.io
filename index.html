@@ -1,82 +1,1576 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- <link rel="stylesheet" href="Css.css">  -->
-  <script src="js/index.js"></script>
-  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-  <title>Birth</title>
+
+    <!--Here's the enhanced HTML code for the New Year Wishes page, a complete web app where users can create personalized greeting cards with their name and photo.
+```html-->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎉 New Year Wishes 2025 | AHOPE Family</title>
+
+    <!--
+    ===========================================================
+    STYLE SECTION
+    ============================================================
+    Contains all CSS for the page including:
+    - Global resets & body styling
+    - Loading screen overlay
+    - Navigation bar
+    - Main container card
+    - Form elements & input fields
+    - Profile display section
+    - Particle animation (fireworks/confetti)
+    - Responsive media queries
+    - Keyframe animations
+    ============================================================
+    -->
+    <style>
+        /* ----------------------------------------------------------
+           CSS CUSTOM PROPERTIES (VARIABLES)
+           Centralizing color scheme, spacing, and font sizes
+           makes the code easier to maintain and update globally.
+           ---------------------------------------------------------- */
+        :root {
+            --gold-primary: #FFD700;
+            --gold-light: #FFE051;
+            --gold-dark: #C9A800;
+            --red-accent: #E63946;
+            --green-accent: #2A9D8F;
+            --white-soft: rgba(255, 255, 255, 0.85);
+            --white-glass: rgba(255, 255, 255, 0.45);
+            --shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.12);
+            --shadow-strong: 0 8px 32px rgba(0, 0, 0, 0.18);
+            --shadow-gold: 0 0 25px rgba(255, 217, 0, 0.6);
+            --border-radius-sm: 8px;
+            --border-radius-md: 14px;
+            --border-radius-lg: 24px;
+            --border-radius-full: 50%;
+            --font-heading: 'Georgia', 'Times New Roman', serif;
+            --font-body: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            --transition-fast: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* ----------------------------------------------------------
+           GLOBAL RESET & BASE STYLES
+           Removes default margins/padding and sets box-sizing
+           to border-box for predictable layout calculations.
+           ---------------------------------------------------------- */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* ----------------------------------------------------------
+           BODY STYLES
+           - Full viewport height
+           - Centered content using flexbox
+           - Background image with blur overlay for depth
+           - The backdrop-filter creates a frosted glass effect
+           ---------------------------------------------------------- */
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            /* Background image - replace with your own festive image */
+            
+            /* Fallback gradient if image fails to load */
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%);
+            background-image: url('/MY JS PRACTICE/assets /Addy.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            background-size: cover;
+            /* Flexbox for centering the container vertically & horizontally */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            /* Prevents horizontal scrollbar */
+        }
+
+        /* ----------------------------------------------------------
+           BLUR OVERLAY - Creates depth between background & content
+           Using a pseudo-element on body isn't reliable, so we use
+           a dedicated overlay div placed via JavaScript or a wrapper.
+           Instead, we apply backdrop-filter on the container itself.
+           ---------------------------------------------------------- */
+
+        /* ----------------------------------------------------------
+           PARTICLE CANVAS - Fireworks/Confetti Background
+           Positioned behind all content but above the background image.
+           This canvas is dynamically drawn by JavaScript to create
+           animated particles (sparkles, confetti, fireworks).
+           ---------------------------------------------------------- */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            /* Allows clicking through the canvas */
+            z-index: 1;
+            /* Above background, below content */
+        }
+
+        /* ----------------------------------------------------------
+           LOADING SCREEN OVERLAY
+           - Covers the entire viewport
+           - White background with subtle texture
+           - Displays the AHOPE Family logo
+           - Fades out after 2 seconds via JavaScript
+           - z-index: 100 ensures it's above everything during load
+           ---------------------------------------------------------- */
+        .loading {
+            position: fixed;
+            /* Fixed to cover viewport even when scrolling */
+            top: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(180deg, #ffffff 0%, #fefefe 40%, #fdf5e6 100%);
+            /* Subtle gradient */
+            z-index: 100;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+            pointer-events: all;
+            /* Blocks interaction while loading */
+        }
+
+        /* When hidden, fade out and allow interaction */
+        .loading.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Loading text container */
+        .loadingText {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            animation: pulse-loading 1.8s ease-in-out infinite;
+        }
+
+        /* Main loading heading with gradient text */
+        .loadingText h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            font-family: var(--font-heading);
+            letter-spacing: 2px;
+            /* Gradient text effect using background-clip */
+            background: linear-gradient(to bottom, #FFD700 20%, #2A9D8F 70%, #1a5c4a 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+        }
+
+        /* Subtitle under the logo */
+        .loadingText span {
+            display: block;
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 10px;
+            text-transform: uppercase;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        /* Loading spinner dots */
+        .loading-dots {
+            display: flex;
+            gap: 8px;
+            margin-top: 20px;
+        }
+        .loading-dots .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--gold-primary);
+            animation: dot-bounce 1.4s ease-in-out infinite;
+        }
+        .loading-dots .dot:nth-child(2) {
+            animation-delay: 0.2s;
+            background: var(--red-accent);
+        }
+        .loading-dots .dot:nth-child(3) {
+            animation-delay: 0.4s;
+            background: var(--green-accent);
+        }
+
+        /* ----------------------------------------------------------
+           NAVIGATION BAR
+           - Fixed at the top of the viewport
+           - Frosted glass effect via backdrop-filter
+           - Contains logo text and a decorative toggle
+           - z-index: 10 keeps it above the container
+           ---------------------------------------------------------- */
+        .navigation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            height: 55px;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            /* Safari support */
+            z-index: 10;
+            background-color: rgba(255, 255, 255, 0.75);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+            padding: 0 20px;
+        }
+
+        /* Navigation heading / logo */
+        .heading {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .heading .logo-icon {
+            font-size: 1.6rem;
+        }
+        .heading .logoText {
+            font-size: 1.3rem;
+            font-weight: 800;
+            font-family: var(--font-heading);
+            background: linear-gradient(to right, #2A9D8F, #FFD700);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+        }
+
+        /* Decorative toggle / hamburger icon */
+        .toggle {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            cursor: pointer;
+            border-radius: var(--border-radius-sm);
+            transition: var(--transition-fast);
+            padding: 5px;
+        }
+        .toggle:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        .toggle .bar {
+            width: 20px;
+            height: 2.5px;
+            background: #444;
+            border-radius: 2px;
+            transition: var(--transition-fast);
+        }
+
+        /* ----------------------------------------------------------
+           MAIN CONTAINER CARD
+           - Centered card with frosted glass effect
+           - Flexbox for inner content alignment
+           - Smooth hover animation with golden glow
+           - Rounded corners for modern look
+           ---------------------------------------------------------- */
+        .container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 360px;
+            min-height: 440px;
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            padding: 30px 24px;
+            border-radius: var(--border-radius-lg);
+            transition: all var(--transition-smooth);
+            background-color: var(--white-glass);
+            box-shadow:
+                0 0 0 1px rgba(255, 255, 255, 0.5) inset,
+                0 4px 6px rgba(0, 0, 0, 0.05),
+                0 10px 30px rgba(0, 0, 0, 0.1);
+            z-index: 5;
+            /* Above particles, below nav */
+            margin-top: 30px;
+            /* Offset for fixed nav */
+        }
+
+        /* Hover effect: intensifies the golden glow */
+        .container:hover {
+            box-shadow:
+                0 0 0 1px rgba(255, 255, 255, 0.6) inset,
+                0 0 40px rgba(255, 217, 0, 0.35),
+                0 10px 40px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+            /* Slight lift */
+        }
+
+        /* ----------------------------------------------------------
+           FORM STYLES
+           - Grid layout for structured form elements
+           - Centered items with consistent spacing
+           - Styled input fields with glass aesthetic
+           ---------------------------------------------------------- */
+        .form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            /* Consistent spacing between form elements */
+        }
+
+        /* Form heading */
+        .form h2 {
+            font-family: var(--font-heading);
+            font-size: 1.4rem;
+            color: #333;
+            margin-bottom: 6px;
+            text-align: center;
+        }
+        .form .subtitle {
+            font-size: 0.8rem;
+            color: #777;
+            text-align: center;
+            margin-top: -8px;
+            margin-bottom: 4px;
+        }
+
+        /* ----------------------------------------------------------
+           PROFILE IMAGE HOLDER (within the form)
+           - Circular container for the uploaded photo
+           - Dashed border indicates it's interactive
+           - Object-fit: cover ensures the image fills the circle
+           ---------------------------------------------------------- */
+        #image-holder {
+            width: 110px;
+            height: 110px;
+            border: 3px dashed #ccc;
+            border-radius: var(--border-radius-full);
+            object-fit: cover;
+            background-color: rgba(200, 200, 200, 0.3);
+            transition: all var(--transition-smooth);
+            cursor: pointer;
+            /* Indicates it's clickable via the file input */
+            display: block;
+        }
+        #image-holder:hover {
+            border-color: var(--gold-primary);
+            box-shadow: var(--shadow-gold);
+            transform: scale(1.04);
+        }
+        /* When an image is loaded, change border to solid */
+        #image-holder.has-image {
+            border: 3px solid var(--green-accent);
+            box-shadow: 0 0 18px rgba(42, 157, 143, 0.4);
+        }
+
+        /* ----------------------------------------------------------
+           FILE UPLOAD BUTTON STYLING
+           The native file input is hidden and triggered by clicking
+           the image holder. The label/button below is styled.
+           ---------------------------------------------------------- */
+        #Add-Photo {
+            display: none;
+            /* Hidden - triggered via image-holder click */
+        }
+        .upload-label {
+            display: inline-block;
+            padding: 7px 18px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #444;
+            border-radius: 20px;
+            border: 2px solid rgba(255, 140, 130, 0.7);
+            background-color: rgba(255, 232, 130, 0.6);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            letter-spacing: 0.5px;
+        }
+        .upload-label:hover {
+            background-color: rgba(255, 232, 130, 0.9);
+            border-color: rgba(255, 140, 130, 1);
+            box-shadow: 0 4px 12px rgba(255, 140, 130, 0.35);
+        }
+
+        /* ----------------------------------------------------------
+           NAME INPUT FIELD
+           - Transparent background with subtle border
+           - Glows on focus with golden shadow
+           - Smooth transitions for interactive states
+           ---------------------------------------------------------- */
+        .input-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 5px;
+        }
+        .input-wrapper label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #444;
+            margin-left: 4px;
+            letter-spacing: 0.4px;
+        }
+        #name {
+            width: 100%;
+            height: 40px;
+            padding: 0 14px;
+            border: 2px solid rgba(180, 180, 180, 0.5);
+            border-radius: var(--border-radius-md);
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.35);
+            font-size: 1rem;
+            color: #333;
+            transition: all var(--transition-fast);
+            font-family: var(--font-body);
+        }
+        #name::placeholder {
+            color: #999;
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+        #name:focus {
+            border-color: var(--gold-light);
+            box-shadow: 0 0 0 4px rgba(255, 224, 81, 0.2), 0 2px 8px rgba(0, 0, 0, 0.06);
+            background-color: rgba(255, 255, 255, 0.6);
+        }
+        /* Error state for validation */
+        #name.error {
+            border-color: var(--red-accent) !important;
+            box-shadow: 0 0 0 4px rgba(230, 57, 70, 0.15) !important;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        /* ----------------------------------------------------------
+           FORM SUBMIT BUTTON
+           - Full-width button with gradient-like shadow
+           - Subtle animation on hover
+           - The "button" text can be customized
+           ---------------------------------------------------------- */
+        .form-btn {
+            width: 100%;
+            height: 44px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6),
+                inset 0 -2px 0 rgba(0, 0, 0, 0.08);
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: #333;
+            border: none;
+            border-radius: var(--border-radius-md);
+            background: linear-gradient(180deg, #FFE051 0%, #FFC107 50%, #FFB300 100%);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            text-transform: uppercase;
+            font-family: var(--font-body);
+            position: relative;
+            overflow: hidden;
+        }
+        .form-btn:hover {
+            box-shadow: 0 6px 20px rgba(255, 193, 7, 0.45),
+                inset 0 1px 0 rgba(255, 255, 255, 0.7),
+                inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+            letter-spacing: 2px;
+        }
+        .form-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15),
+                inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        /* Ripple effect on click (visual feedback) */
+        .form-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        .form-btn:active::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* ----------------------------------------------------------
+           PROFILE DISPLAY SECTION
+           - Hidden by default (display: none)
+           - Shown after form submission
+           - Contains the uploaded photo, name, and wishes
+           ---------------------------------------------------------- */
+        .profile {
+            width: 100%;
+            display: none;
+            /* Hidden initially, toggled via JS */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity var(--transition-smooth);
+            position: relative;
+            gap: 8px;
+        }
+        /* When profile is visible, fade in */
+        .profile.visible {
+            display: flex;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        /* Back arrow button - returns to the form */
+        #back-arrow {
+            position: absolute;
+            left: 6px;
+            top: -6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            padding: 6px 14px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border-radius: 20px;
+            border: 1.5px solid rgba(100, 100, 100, 0.4);
+            background: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            color: #444;
+            backdrop-filter: blur(8px);
+        }
+        #back-arrow:hover {
+            background: rgba(255, 255, 255, 0.95);
+            border-color: #888;
+            box-shadow: var(--shadow-soft);
+        }
+
+        /* Profile photo */
+        .profile .profile-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: var(--border-radius-full);
+            border: 3px solid #96C1FF;
+            padding: 3px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            object-fit: cover;
+            transition: var(--transition-bounce);
+        }
+        .profile .profile-photo:hover {
+            transform: scale(1.06);
+            border-color: var(--gold-primary);
+            box-shadow: 0 8px 28px rgba(255, 215, 0, 0.5);
+        }
+
+        /* Profile name display */
+        .profile h2 {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: #222;
+            text-align: center;
+            margin: 4px 0;
+            word-break: break-word;
+            max-width: 280px;
+        }
+
+        /* New Year wishes message */
+        .profile .wishes-message {
+            font-size: 0.85rem;
+            color: #555;
+            text-align: center;
+            max-width: 260px;
+            line-height: 1.5;
+            font-style: italic;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 12px 16px;
+            border-radius: var(--border-radius-md);
+            border-left: 3px solid var(--gold-primary);
+        }
+
+        /* Action buttons row */
+        .profile .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Generic button style for profile actions */
+        .button {
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: none;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #333;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            letter-spacing: 0.6px;
+            font-family: var(--font-body);
+            backdrop-filter: blur(5px);
+        }
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+        }
+        .button:active {
+            transform: translateY(1px);
+        }
+
+        /* Sign in / Save button - gold accent */
+        #sign-in {
+            background: linear-gradient(180deg, #FFE051 0%, #FFC107 100%);
+        }
+        /* Share button */
+        #share-btn {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1.5px solid #ccc;
+        }
+        /* Reset button */
+        #reset-btn {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1.5px solid #ddd;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        /* ----------------------------------------------------------
+           TOAST NOTIFICATION
+           - Small popup for success/error messages
+           - Slides in from the top
+           - Auto-dismisses after a few seconds
+           ---------------------------------------------------------- */
+        .toast {
+            position: fixed;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-120px);
+            background: #333;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            z-index: 200;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+        .toast.success {
+            background: #2A9D8F;
+        }
+        .toast.error {
+            background: #E63946;
+        }
+
+        /* ----------------------------------------------------------
+           KEYFRAME ANIMATIONS
+           Defined once and reused throughout the page.
+           ---------------------------------------------------------- */
+
+        /* Pulse animation for the loading logo */
+        @keyframes pulse-loading {
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.85;
+            }
+            50% {
+                transform: scale(1.06);
+                opacity: 1;
+            }
+        }
+
+        /* Bouncing dots for loading indicator */
+        @keyframes dot-bounce {
+            0%,
+            80%,
+            100% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+            40% {
+                transform: translateY(-14px);
+                opacity: 1;
+            }
+        }
+
+        /* Shake animation for input validation errors */
+        @keyframes shake {
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+            20% {
+                transform: translateX(-6px);
+            }
+            40% {
+                transform: translateX(6px);
+            }
+            60% {
+                transform: translateX(-4px);
+            }
+            80% {
+                transform: translateX(4px);
+            }
+        }
+
+        /* Fade in and slide up for profile reveal */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Subtle floating animation for festive feel */
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        /* Sparkle twinkle */
+        @keyframes twinkle {
+            0%,
+            100% {
+                opacity: 0.3;
+                transform: scale(0.8);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.3);
+            }
+        }
+
+        /* ----------------------------------------------------------
+           RESPONSIVE DESIGN - Media Queries
+           Adjusts styles for smaller screens (mobile devices).
+           ---------------------------------------------------------- */
+        @media (max-width: 480px) {
+            .container {
+                width: 90%;
+                /* Take 90% of screen width */
+                min-height: auto;
+                padding: 22px 16px;
+                border-radius: var(--border-radius-md);
+                margin-top: 20px;
+            }
+            .loadingText h1 {
+                font-size: 2.8rem;
+            }
+            .loadingText span {
+                font-size: 0.75rem;
+                letter-spacing: 6px;
+            }
+            .navigation {
+                height: 45px;
+                padding: 0 12px;
+            }
+            .heading .logoText {
+                font-size: 1.1rem;
+            }
+            #image-holder {
+                width: 90px;
+                height: 90px;
+            }
+            .profile .profile-photo {
+                width: 100px;
+                height: 100px;
+            }
+            .profile h2 {
+                font-size: 1.2rem;
+            }
+            .profile .wishes-message {
+                font-size: 0.78rem;
+                max-width: 220px;
+                padding: 10px 12px;
+            }
+            .form-btn {
+                height: 40px;
+                font-size: 0.9rem;
+            }
+            .button {
+                padding: 8px 15px;
+                font-size: 0.78rem;
+            }
+            .toast {
+                font-size: 0.78rem;
+                padding: 10px 18px;
+                top: 55px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-	<div>
-          <hr style="height:3px; color:#000;">
-	<!--  <h1>Yohannes Ashagre</h1>
-          <span style="color:green;">Junior frontend developer</span>
-          <p>044 street</p>
-	  <p>Adiss Ababa, Ethiopia</p>
-	  <p>(123) 6693-1863</p> -->
-	  <p>yohannesashagre30@gmail.com</p>
-          <span style="color:green;">Skill</span>    
-          <p>Html, css, js</p>
-          <span style="color:green;">Education</span><br>
-	  <span style="color:blue;">Tegbared, Adiss Ababa, Diploma</span>
-	  <p>12 2018 - 06 2021</p>
-	  <p>Write some thing</p>
-	  <span style="color:green;">Experience</span><br>
-	  <span style="color:blue;">John ART, Adiss Ababa, ART work</span>
-	  <p>12 2018 - 06 2021</p>
-	  <ul>
-	    <li>Electric installation </li>
-	    <li>Computer maintenance</li>
-	    <li>Frontend</li>
-	  </ul>
-          <p>Skill: </p>
-	  <span style="color:blue;">John ART, Adiss Ababa, ART work</span>
-	  <p>12 2018 - 06 2021</p>
-	  <ul>
-	    <li>Electric installation </li>
-	    <li>Computer maintenance</li>
-	    <li>Frontend</li>
-	  </ul>
-          <p>Skill: </p>
-	  <span style="color:green;">Across the internet </span>
-	  <a href="#">Github</a>
-	</div>
-	
-    <!--   <div class="continer">
-	  
-	  <div class="img"> 
-	  <img src="/Image/John.png" class="new">
-	  </div>
-	  <h1>Happy Birthday</h1>
-	  <div class="like">
-	    
-	    <a href="" class="f1"><i class='bx bx-like' ></i>
-	    <spam class="no">22M</spam>
-	    </a>
-	    <a href="" class="f1"><i class='bx bx-comment-dots' ></i>
-	    <spam class="no">22k</spam>
-	    </a>   
-	    <a href="" class="f1"><i class='bx bx-share' ></i>
-	    <spam class="no">700</spam>
-	    </a>
-	  </div>
-	  <div class= "btn">
-	    <form>
-	      <input type="text" placeholder="Comment">
-	    <button type="submit">Send a gift</button> 
-	     </form>
-	 	  </div>
-	 	  
-	  <div class="link">
-	    <a href="#" class="face"><i class='bx bxl-facebook'></i></a>
-	    <a href="#" class="tele"><i class='bx bxl-telegram' ></i></a>
-	    <a href="#" class="twit"><i class='bx bxl-twitter' ></i></a>
-	    <a href="#" class= "yout"><i class='bx bxl-youtube' ></i></a>
-	  </div>
-	  
-	</div> -->
-	
-	</body>
+
+    <!--
+    ============================================================
+    PARTICLE CANVAS - Fireworks & Confetti Background
+    This canvas is drawn by JavaScript to create animated
+    particles (sparkles and confetti pieces) that float
+    across the screen, adding a festive New Year atmosphere.
+    It sits behind all interactive elements (z-index: 1).
+    ============================================================
+    -->
+    <canvas id="particles-canvas" aria-hidden="true"></canvas>
+
+    <!--
+    ============================================================
+    LOADING SCREEN
+    Displays immediately when the page loads. Shows the
+    "AHOPE Family" logo with animated dots. After 2 seconds
+    (controlled by JavaScript), it fades out to reveal
+    the main content. This gives the page time to fully
+    render and creates a polished first impression.
+    ============================================================
+    -->
+    <div class="loading" id="loadPage" role="status" aria-label="Loading">
+        <div class="loadingText">
+            <h1>AHOPE<span>Family</span></h1>
+            <div class="loading-dots">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
+    </div>
+
+    <!--
+    ============================================================
+    NAVIGATION BAR
+    A fixed top bar with a frosted glass appearance.
+    Contains the page title "🎉 Happy New Year 2025" and
+    a decorative hamburger-style toggle icon.
+    ============================================================
+    -->
+    <nav class="navigation" aria-label="Top navigation">
+        <span class="heading">
+            <span class="logo-icon">🎉</span>
+            <h1 class="logoText">Happy New Year 2025</h1>
+        </span>
+        <span class="toggle" title="Menu" aria-label="Toggle menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </span>
+    </nav>
+
+    <!--
+    ============================================================
+    MAIN CONTAINER CARD
+    This is the central interactive card. It holds TWO views
+    that toggle between each other:
+      1. The FORM view (input name + upload photo)
+      2. The PROFILE view (displays the greeting card)
+
+    Both are inside this single container for smooth transitions.
+    ============================================================
+    -->
+    <main class="container" aria-label="New Year wishes card">
+
+        <!--
+        ----------------------------------------------------------
+        FORM VIEW
+        - User uploads a profile photo
+        - User enters their name
+        - On submit, the profile view is shown
+        ----------------------------------------------------------
+        -->
+        <form class="form" id="main-form" novalidate>
+            <h2>✨ Create Your Wish ✨</h2>
+            <p class="subtitle">Upload a photo & enter your name</p>
+
+            <!--
+            Profile image preview.
+            Clicking this triggers the hidden file input below.
+            The 'src' is empty until a file is selected.
+            -->
+            <img
+            src=""
+            id="image-holder"
+            alt="Click to upload your photo"
+            title="Click the circle to add your photo"
+            loading="lazy"
+            />
+
+            <!-- Hidden file input, triggered by clicking the image above -->
+            <input
+            type="file"
+            id="Add-Photo"
+            accept="image/*"
+            aria-label="Upload your profile photo"
+            />
+
+            <!-- Styled label acting as the upload button -->
+            <label for="Add-Photo" class="upload-label">📷 Choose Photo</label>
+
+            <!-- Name input field with label -->
+            <div class="input-wrapper">
+                <label for="name">Your Name</label>
+                <input
+                type="text"
+                id="name"
+                placeholder="Enter your name here..."
+                autocomplete="given-name"
+                maxlength="40"
+                aria-required="true"
+                />
+            </div>
+
+            <!-- Submit button - generates the wish card -->
+            <button type="submit" class="form-btn" id="form-btn">
+                ✨ Generate Wish Card
+            </button>
+        </form>
+
+        <!--
+        ----------------------------------------------------------
+        PROFILE VIEW (initially hidden)
+        Displays the personalized New Year greeting card with:
+        - The uploaded photo
+        - The entered name
+        - A heartfelt New Year wishes message
+        - Action buttons (Save, Share, Reset)
+        ----------------------------------------------------------
+        -->
+        <div class="profile" id="profile-section" aria-live="polite">
+            <!-- Back button to return to the form -->
+            <button id="back-arrow" title="Go back to form" aria-label="Back to form">
+                ← Back
+            </button>
+
+            <!-- Displayed profile photo -->
+            <img
+            src=""
+            id="second-img"
+            class="profile-photo"
+            alt="Your profile photo"
+            loading="lazy"
+            />
+
+            <!-- User's name displayed here -->
+            <h2 id="textName">Guest</h2>
+
+            <!-- New Year wishes message -->
+            <p class="wishes-message" id="wishes-message">
+                🎊 Wishing you a year filled with joy, success, and wonderful
+                moments. May 2025 bring you endless happiness and prosperity! 🎊
+            </p>
+
+            <!-- Action buttons row -->
+            <div class="action-buttons">
+                <button class="button" id="sign-in" title="Save your wish card">
+                    💾 Save Card
+                </button>
+                <button class="button" id="share-btn" title="Share with friends">
+                    📤 Share
+                </button>
+                <button class="button" id="reset-btn" title="Create a new card">
+                    🔄 New Card
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!--
+    ============================================================
+    TOAST NOTIFICATION ELEMENT
+    Used to show brief success/error messages to the user.
+    Hidden by default; appears via JavaScript.
+    ============================================================
+    -->
+    <div class="toast" id="toast" aria-live="assertive" aria-atomic="true"></div>
+
+    <!--
+    ============================================================
+    JAVASCRIPT SECTION
+    Contains all interactive functionality:
+    1. Loading screen timeout
+    2. Particle canvas (fireworks/confetti animation)
+    3. Image upload & preview
+    4. Form submission & validation
+    5. Profile view toggling
+    6. Toast notifications
+    7. Local storage for saving data
+    8. Share functionality
+    9. Reset functionality
+    ============================================================
+    -->
+    <script>
+        // ============================================================
+        // 1. DOM ELEMENT REFERENCES
+        //    Grab all necessary elements once and store in variables
+        //    for efficient reuse throughout the script.
+        // ============================================================
+        const loadingPage = document.getElementById('loadPage');
+        const inputPhoto = document.getElementById('Add-Photo');
+        const profileDisplay = document.getElementById('image-holder');
+        const profileSection = document.getElementById('profile-section');
+        const addForm = document.getElementById('main-form');
+        const formBtn = document.getElementById('form-btn');
+        const inputName = document.getElementById('name');
+        const backArrow = document.getElementById('back-arrow');
+        const textName = document.getElementById('textName');
+        const secondImg = document.getElementById('second-img');
+        const signInBtn = document.getElementById('sign-in');
+        const shareBtn = document.getElementById('share-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const toast = document.getElementById('toast');
+        const wishesMessage = document.getElementById('wishes-message');
+        const particlesCanvas = document.getElementById('particles-canvas');
+        const ctx = particlesCanvas.getContext('2d');
+
+        // ============================================================
+        // 2. LOADING SCREEN LOGIC
+        //    After 2 seconds (2000ms), the loading overlay fades out
+        //    by adding the 'hidden' class which triggers CSS transitions.
+        //    This gives a polished loading experience.
+        // ============================================================
+        setTimeout(() => {
+            loadingPage.classList.add('hidden');
+        }, 2000);
+
+        // ============================================================
+        // 3. TOAST NOTIFICATION FUNCTION
+        //    Displays a small popup message at the top of the screen.
+        //    Parameters:
+        //      - message: The text to display
+        //      - type: 'success' (green) or 'error' (red)
+        //    The toast auto-hides after 2.5 seconds.
+        // ============================================================
+        function showToast(message, type = 'success') {
+            toast.textContent = message;
+            toast.className = 'toast ' + type + ' show';
+            // Clear any previous timeout to avoid conflicts
+            if (toast._timeout) clearTimeout(toast._timeout);
+            // Auto-hide after 2.5 seconds
+            toast._timeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        // ============================================================
+        // 4. IMAGE UPLOAD & PREVIEW
+        //    When the user selects an image file, create a temporary
+        //    URL using URL.createObjectURL() and set it as the src
+        //    of the image holder. Also store the file reference.
+        //    Adds 'has-image' class for visual feedback (solid border).
+        // ============================================================
+        let uploadedFile = null; // Store the file for later use
+
+        inputPhoto.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                uploadedFile = this.files[0];
+                // Create a blob URL for preview (revoked on new selection or page unload)
+                const blobUrl = URL.createObjectURL(uploadedFile);
+                // If there was a previous blob URL, revoke it to free memory
+                if (profileDisplay.dataset.blobUrl) {
+                    URL.revokeObjectURL(profileDisplay.dataset.blobUrl);
+                }
+                profileDisplay.src = blobUrl;
+                profileDisplay.dataset.blobUrl = blobUrl;
+                // Add class to indicate an image has been loaded
+                profileDisplay.classList.add('has-image');
+                // Also update the profile view's image
+                secondImg.src = blobUrl;
+                showToast('📸 Photo uploaded successfully!', 'success');
+            }
+        });
+
+        // Allow clicking the image holder to trigger the file input
+        profileDisplay.addEventListener('click', function() {
+            inputPhoto.click();
+        });
+
+        // ============================================================
+        // 5. FORM SUBMISSION HANDLER
+        //    Validates the name input, then switches from the form
+        //    view to the profile view. Updates the profile with
+        //    the user's name and photo. Shows error feedback if
+        //    the name is empty or only whitespace.
+        // ============================================================
+        formBtn.addEventListener('click', function(event) {
+            // Prevent the default form submission (page reload)
+            event.preventDefault();
+
+            // Trim whitespace from the name input
+            const trimmedName = inputName.value.trim();
+
+            // --- Validation ---
+            // Check if name is empty or contains only spaces
+            if (trimmedName === '') {
+                // Visual error feedback on the input
+                inputName.classList.add('error');
+                showToast('⚠️ Please enter your name first!', 'error');
+                // Remove error class after animation completes
+                setTimeout(() => {
+                    inputName.classList.remove('error');
+                }, 600);
+                // Focus back on the input for convenience
+                inputName.focus();
+                return; // Stop execution - don't proceed
+            }
+
+            // --- Success: Switch to profile view ---
+            // Update the profile name display
+            textName.textContent = trimmedName;
+
+            // Update the wishes message to include the user's name
+            wishesMessage.textContent =
+                `🎊 Dear ${trimmedName}, wishing you a spectacular New Year 2025! ` +
+                `May each day bring you closer to your dreams. ` +
+                `Stay blessed, stay happy, and keep shining bright! 🌟`;
+
+            // If a photo was uploaded, ensure the profile image is updated
+            if (uploadedFile && profileDisplay.src) {
+                secondImg.src = profileDisplay.src;
+            }
+
+            // Show the profile section with animation
+            profileSection.classList.add('visible');
+            profileSection.style.display = 'flex';
+            // Hide the form
+            addForm.style.display = 'none';
+            // Reset border in case it was in error state
+            inputName.classList.remove('error');
+
+            // Show success toast
+            showToast('🎉 Your wish card is ready!', 'success');
+
+            // Log for debugging purposes
+            console.log(`✅ User submitted — Name: "${trimmedName}" | Photo: ${uploadedFile ? uploadedFile.name : 'None'}`);
+        });
+
+        // ============================================================
+        // 6. BACK ARROW - Return to Form View
+        //    Hides the profile section and shows the form again,
+        //    allowing the user to edit their details.
+        // ============================================================
+        backArrow.addEventListener('click', function() {
+            // Hide profile with a smooth transition
+            profileSection.classList.remove('visible');
+            profileSection.style.display = 'none';
+            // Show the form again
+            addForm.style.display = 'flex';
+            // Add a subtle animation to the form reappearing
+            addForm.style.animation = 'fadeInUp 0.4s ease-out';
+            // Remove animation after it completes (so it can replay later)
+            setTimeout(() => {
+                addForm.style.animation = '';
+            }, 400);
+            console.log('↩️ Returned to form view');
+        });
+
+        // ============================================================
+        // 7. SAVE CARD BUTTON - Local Storage
+        //    Saves the user's name and photo (as base64 data URL)
+        //    to the browser's localStorage so the card persists
+        //    even after the page is refreshed or closed.
+        // ============================================================
+        signInBtn.addEventListener('click', function() {
+            const userName = textName.textContent.trim();
+            if (userName === 'Guest' || userName === '') {
+                showToast('⚠️ No data to save. Create a card first!', 'error');
+                return;
+            }
+
+            // Convert the profile image to a base64 data URL for storage
+            // Create a temporary canvas to resize/compress if needed
+            const img = secondImg;
+            const canvas = document.createElement('canvas');
+            const maxSize = 200; // Max dimension for the stored image
+            let width = img.naturalWidth || img.width;
+            let height = img.naturalHeight || img.height;
+
+            // Scale down if image is larger than maxSize
+            if (width > maxSize || height > maxSize) {
+                const ratio = Math.min(maxSize / width, maxSize / height);
+                width = Math.round(width * ratio);
+                height = Math.round(height * ratio);
+            }
+            canvas.width = width;
+            canvas.height = height;
+            const tempCtx = canvas.getContext('2d');
+            tempCtx.drawImage(img, 0, 0, width, height);
+            const imageDataUrl = canvas.toDataURL('image/jpeg', 0.7);
+
+            // Save to localStorage
+            const cardData = {
+                name: userName,
+                photo: imageDataUrl,
+                savedAt: new Date().toISOString(),
+            };
+            try {
+                localStorage.setItem('newYearWishCard', JSON.stringify(cardData));
+                showToast('💾 Card saved successfully!', 'success');
+                console.log('💾 Card data saved to localStorage:', cardData);
+            } catch (e) {
+                // Handle quota exceeded error
+                showToast('⚠️ Storage full. Try a smaller photo.', 'error');
+                console.error('❌ localStorage save failed:', e);
+            }
+        });
+
+        // ============================================================
+        // 8. SHARE BUTTON - Web Share API
+        //    Attempts to use the native Web Share API (available on
+        //    most modern mobile browsers). Falls back to copying
+        //    a message to the clipboard if the API is unavailable.
+        // ============================================================
+        shareBtn.addEventListener('click', function() {
+            const userName = textName.textContent.trim();
+            const shareMessage =
+                `🎉 ${userName} sends you warm wishes for New Year 2025! ` +
+                `May this year bring you joy, success, and countless blessings. ✨ #HappyNewYear2025 #AHOPEFamily`;
+
+            // Check if the Web Share API is available
+            if (navigator.share) {
+                navigator.share({
+                        title: 'New Year Wishes 2025',
+                        text: shareMessage,
+                        url: window.location.href,
+                    })
+                    .then(() => {
+                        showToast('📤 Shared successfully!', 'success');
+                        console.log('📤 Content shared via Web Share API');
+                    })
+                    .catch((err) => {
+                        // User cancelled or share failed
+                        if (err.name !== 'AbortError') {
+                            console.warn('⚠️ Share failed:', err);
+                            fallbackCopy(shareMessage);
+                        }
+                    });
+            } else {
+                // Fallback: copy to clipboard
+                fallbackCopy(shareMessage);
+            }
+        });
+
+        /**
+         * Fallback function: Copies the given text to the clipboard
+         * and shows a toast notification.
+         * @param {string} text - The text to copy
+         */
+        function fallbackCopy(text) {
+            navigator.clipboard.writeText(text)
+                .then(() => {
+                    showToast('📋 Wish copied to clipboard!', 'success');
+                    console.log('📋 Message copied to clipboard');
+                })
+                .catch(() => {
+                    showToast('⚠️ Could not copy. Please try again.', 'error');
+                    console.error('❌ Clipboard copy failed');
+                });
+        }
+
+        // ============================================================
+        // 9. RESET BUTTON - Clear and Start Over
+        //    Resets the form, clears the profile, and optionally
+        //    removes saved data from localStorage.
+        // ============================================================
+        resetBtn.addEventListener('click', function() {
+            // Clear the name input
+            inputName.value = '';
+            // Clear the image preview
+            if (profileDisplay.dataset.blobUrl) {
+                URL.revokeObjectURL(profileDisplay.dataset.blobUrl);
+            }
+            profileDisplay.src = '';
+            profileDisplay.classList.remove('has-image');
+            profileDisplay.dataset.blobUrl = '';
+            // Reset the profile 'image' to placeholder
+            secondImg.src = 'https://via.placeholder.com/120/FFE051/333?text=You';
+            // Reset profile name
+            textName.textContent = 'Guest';
+            // Reset wishes message
+            wishesMessage.textContent =
+                '🎊 Wishing you a year filled with joy, success, and wonderful moments. May 2025 bring you endless happiness and prosperity! 🎊';
+            // Reset the uploaded file reference
+            uploadedFile = null;
+            inputPhoto.value = '';
+            // Switch back to form view
+            profileSection.classList.remove('visible');
+            profileSection.style.display = 'none';
+            addForm.style.display = 'flex';
+            addForm.style.animation = 'fadeInUp 0.4s ease-out';
+            setTimeout(() => { addForm.style.animation = ''; }, 400);
+            // Remove from localStorage
+            localStorage.removeItem('newYearWishCard');
+            showToast('🔄 Card reset. Create a new one!', 'success');
+            console.log('🔄 All data reset');
+        });
+
+        // ============================================================
+        // 10. LOAD SAVED DATA ON PAGE LOAD
+        //     Checks localStorage for previously saved card data
+        //     and pre-fills the profile if found.
+        // ============================================================
+        function loadSavedCard() {
+            try {
+                const savedData = localStorage.getItem('newYearWishCard');
+                if (savedData) {
+                    const cardData = JSON.parse(savedData);
+                    if (cardData.name && cardData.photo) {
+                        // Pre-fill the name
+                        inputName.value = cardData.name;
+                        textName.textContent = cardData.name;
+                        // Set the profile image
+                        secondImg.src = cardData.photo;
+                        profileDisplay.src = cardData.photo;
+                        profileDisplay.classList.add('has-image');
+                        // Update wishes message
+                        wishesMessage.textContent =
+                            `🎊 Dear ${cardData.name}, wishing you a spectacular New Year 2025! ` +
+                            `May each day bring you closer to your dreams. ` +
+                            `Stay blessed, stay happy, and keep shining bright! 🌟`;
+                        console.log('📂 Loaded saved card from localStorage:', cardData);
+                    }
+                }
+            } catch (e) {
+                console.warn('⚠️ Could not load saved card:', e);
+                localStorage.removeItem('newYearWishCard');
+            }
+        }
+        // Call on page load
+        loadSavedCard();
+
+        // ============================================================
+        // 11. PARTICLE CANVAS - Fireworks & Confetti Animation
+        //     Creates a beautiful animated background with floating
+        //     particles (sparkles, confetti pieces) to enhance the
+        //     festive New Year atmosphere.
+        //     Uses requestAnimationFrame for smooth 60fps animation.
+        // ============================================================
+        function initParticles() {
+            // Resize canvas to match window dimensions
+            function resizeCanvas() {
+                particlesCanvas.width = window.innerWidth;
+                particlesCanvas.height = window.innerHeight;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            // Particle class definition
+            class Particle {
+                constructor() {
+                    this.reset();
+                    // Start at a random vertical position for immediate coverage
+                    this.y = Math.random() * particlesCanvas.height;
+                }
+
+                reset() {
+                    // Random position
+                    this.x = Math.random() * particlesCanvas.width;
+                    this.y = Math.random() * particlesCanvas.height * -1; // Start above viewport
+                    // Random size (1-4 pixels)
+                    this.size = Math.random() * 3 + 1;
+                    // Random fall speed (0.3 - 2.0 pixels per frame)
+                    this.speedY = Math.random() * 1.7 + 0.3;
+                    // Slight horizontal drift
+                    this.speedX = (Math.random() - 0.5) * 0.6;
+                    // Random opacity
+                    this.opacity = Math.random() * 0.7 + 0.3;
+                    // Random color from festive palette
+                    const colors = [
+                        '#FFD700', // Gold
+                        '#FF6B6B', // Coral red
+                        '#4ECDC4', // Teal
+                        '#FFE66D', // Light gold
+                        '#FF8C94', // Salmon pink
+                        '#A8E6CF', // Mint green
+                        '#FFB347', // Orange
+                        '#87CEEB', // Sky blue
+                        '#FF69B4', // Hot pink
+                        '#F0E68C', // Khaki gold
+                    ];
+                    this.color = colors[Math.floor(Math.random() * colors.length)];
+                    // Random shape type: 'circle' or 'rect' (confetti)
+                    this.shape = Math.random() > 0.4 ? 'circle' : 'rect';
+                    // Rotation for rectangular confetti
+                    this.rotation = Math.random() * Math.PI * 2;
+                    this.rotationSpeed = (Math.random() - 0.5) * 0.04;
+                    // Twinkle phase offset
+                    this.twinkleOffset = Math.random() * Math.PI * 2;
+                }
+
+                update() {
+                    // Move particle downward
+                    this.y += this.speedY;
+                    // Slight horizontal movement
+                    this.x += this.speedX;
+                    // Rotate confetti
+                    this.rotation += this.rotationSpeed;
+
+                    // Reset particle if it goes below the viewport
+                    if (this.y > particlesCanvas.height + 20) {
+                        this.reset();
+                        this.y = -20;
+                    }
+                    // Wrap horizontally
+                    if (this.x > particlesCanvas.width + 20) this.x = -20;
+                    if (this.x < -20) this.x = particlesCanvas.width + 20;
+                }
+
+                draw(ctx, frameCount) {
+                    ctx.save();
+                    ctx.translate(this.x, this.y);
+                    // Apply twinkling opacity
+                    const twinkle = Math.sin(frameCount * 0.05 + this.twinkleOffset) * 0.25 + 0.75;
+                    const alpha = this.opacity * twinkle;
+                    ctx.globalAlpha = Math.max(0.15, Math.min(1, alpha));
+                    ctx.fillStyle = this.color;
+
+                    if (this.shape === 'circle') {
+                        // Draw sparkle circle with glow
+                        ctx.shadowColor = this.color;
+                        ctx.shadowBlur = 6;
+                        ctx.beginPath();
+                        ctx.arc(0, 0, this.size, 0, Math.PI * 2);
+                        ctx.fill();
+                    } else {
+                        // Draw confetti rectangle
+                        ctx.shadowColor = this.color;
+                        ctx.shadowBlur = 3;
+                        ctx.rotate(this.rotation);
+                        ctx.fillRect(-this.size, -this.size * 0.4, this.size * 2, this.size * 0.8);
+                    }
+                    ctx.restore();
+                }
+            }
+
+            // Create particle pool
+            const particleCount = 120; // Number of particles
+            const particles = [];
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+
+            let frameCount = 0;
+
+            // Animation loop
+            function animate() {
+                frameCount++;
+                // Clear canvas with a very subtle trail effect
+                ctx.clearRect(0, 0, particlesCanvas.width, particlesCanvas.height);
+
+                // Update and draw all particles
+                particles.forEach(particle => {
+                    particle.update();
+                    particle.draw(ctx, frameCount);
+                });
+
+                // Continue the animation loop
+                requestAnimationFrame(animate);
+            }
+
+            // Start the animation
+            animate();
+            console.log('✨ Particle animation initialized with', particleCount, 'particles');
+        }
+
+        // Initialize particles after a short delay to ensure DOM is ready
+        setTimeout(initParticles, 100);
+
+        // ============================================================
+        // 12. TOGGLE MENU - Simple interaction for the nav toggle
+        //     Rotates the bars slightly on click (visual feedback).
+        // ============================================================
+        const toggleBtn = document.querySelector('.toggle');
+        toggleBtn.addEventListener('click', function() {
+            const bars = this.querySelectorAll('.bar');
+            // Toggle a class for animation
+            this.classList.toggle('active');
+            if (this.classList.contains('active')) {
+                bars[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                bars[1].style.opacity = '0';
+                bars[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+                showToast('🎉 Happy New Year 2025! 🎉', 'success');
+            } else {
+                bars[0].style.transform = 'none';
+                bars[1].style.opacity = '1';
+                bars[2].style.transform = 'none';
+            }
+        });
+
+        // ============================================================
+        // 13. KEYBOARD SUPPORT - Allow Enter key to submit the form
+        //     when the name input is focused.
+        // ============================================================
+        inputName.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                formBtn.click(); // Trigger the submit button's click handler
+            }
+        });
+
+        // ============================================================
+        // 14. CLEANUP - Revoke blob URLs on page unload to prevent
+        //     memory leaks.
+        // ============================================================
+        window.addEventListener('beforeunload', function() {
+            if (profileDisplay.dataset.blobUrl) {
+                URL.revokeObjectURL(profileDisplay.dataset.blobUrl);
+            }
+        });
+
+        // ============================================================
+        // LOG - Indicate that all scripts have loaded successfully
+        // ============================================================
+        console.log('🚀 New Year Wishes 2025 — All systems ready!');
+        console.log('📋 Features: Photo upload, name personalization, particle animation,');
+        console.log('   local storage, share functionality, toast notifications,');
+        console.log('   responsive design, keyboard support, and more.');
+    </script>
+    <!--
+    ```
+### New Year Features
+
+Here's how the New Year wishes card works, including the animation effects, image personalization, and interactive controls.
+
+- **🎨 Visual Style & Atmosphere:** The page uses a blurred background image with floating confetti/sparkle particles (rendered on canvas) to create a festive mood. The main card features a "frosted glass" effect (`backdrop-filter`), soft shadows, and a golden glow on hover.
+- **📸 Card Creation Flow:** Users can **upload a photo** (by clicking the circular placeholder) and **enter their name**. Clicking the "Generate Wish Card" button validates the name and reveals the personalized profile view with a pre-written New Year message.
+- **🖱️ Interactive Controls:** The profile view includes buttons to **Save** the card to your browser's local storage, **Share** it using the Web Share API (or copy to clipboard), and **Reset** the form to create a new card. A drawer menu icon in the navigation bar also provides a fun toast notification.
+
+---
+
+**Optimization Tip:** You can replace the background image URL and the default placeholder image (`via.placeholder.com`) with your own assets. The particle colors and count are customizable in the `Particle` class.
+    -->
+</body>
 </html>
