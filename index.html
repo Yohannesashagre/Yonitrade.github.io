@@ -7,7 +7,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎉 New Year Wishes 2019 | AHOPE Family</title>
+    <title>🎉 New Year Wishes 2025 | AHOPE Family</title>
 
     <!--
     ===========================================================
@@ -38,7 +38,7 @@
             --red-accent: #E63946;
             --green-accent: #2A9D8F;
             --white-soft: rgba(255, 255, 255, 0.85);
-            --white-glass: rgba(255, 255, 255, 0.45);
+            --white-glass: rgba(255, 255, 255, 0.5);
             --shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.12);
             --shadow-strong: 0 8px 32px rgba(0, 0, 0, 0.18);
             --shadow-gold: 0 0 25px rgba(255, 217, 0, 0.6);
@@ -82,7 +82,7 @@
             /* Fallback gradient if image fails to load */
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%);
             background-image: url('Adey_photo.jpg');
-            background-color: rgba( 0, 0, 0, .1);
+            backdrop-filter: blur(5px);
             background-repeat: no-repeat;
             background-attachment: fixed;
             background-position: center;
@@ -1258,7 +1258,7 @@
             const userName = textName.textContent.trim();
             const shareMessage =
                 `🎉 ${userName} sends you warm wishes for New Year 2019! ` +
-                `May this year bring you joy, success, and countless blessings. ✨ #HappyNewYear2025 #AHOPEFamily`;
+                `May this year bring you joy, success, and countless blessings. ✨ #HappyNewYear2019 #AHOPEFamily`;
 
             // Check if the Web Share API is available
             if (navigator.share) {
@@ -1522,7 +1522,7 @@
                 bars[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
                 bars[1].style.opacity = '0';
                 bars[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
-                showToast('🎉 Happy New Year 2025! 🎉', 'success');
+                showToast('🎉 Happy New Year 2019! 🎉', 'success');
             } else {
                 bars[0].style.transform = 'none';
                 bars[1].style.opacity = '1';
